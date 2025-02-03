@@ -2,8 +2,13 @@
 import fastifyJwt from '@fastify/jwt';
 import Fastify from 'fastify';
 import routes from './src/routes/index.js';
+import cors from '@fastify/cors';
 const fastify = Fastify({
 	logger: true,
+});
+
+await fastify.register(cors, {
+	// put your options here
 });
 const secret = process.env.SECRET;
 // Declare a route
