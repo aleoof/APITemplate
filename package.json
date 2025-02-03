@@ -15,11 +15,20 @@
 	"type": "module",
 	"main": "index.js",
 	"scripts": {
-		"dev": "node index",
+		"dev": "node --env-file=.env index",
+		"migrate": "npx prisma migrate dev --name init",
+		"dbpush": "npx prisma db push",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"dependencies": {
 		"@fastify/express": "^4.0.2",
+		"@fastify/jwt": "^9.0.3",
+		"@prisma/client": "^6.3.0",
+		"@types/bcryptjs": "^2.4.6",
+		"bcryptjs": "^2.4.3",
 		"fastify": "^5.2.1"
+	},
+	"devDependencies": {
+		"prisma": "^6.3.0"
 	}
 }
