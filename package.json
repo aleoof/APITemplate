@@ -1,0 +1,25 @@
+{
+	"name": "apitemplate",
+	"version": "1.0.0",
+	"description": "",
+	"homepage": "https://github.com/aleoof/APITemplate#readme",
+	"bugs": {
+		"url": "https://github.com/aleoof/APITemplate/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/aleoof/APITemplate.git"
+	},
+	"license": "ISC",
+	"author": "Alexandre Oliveira",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {
+		"dev": "node index",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"@fastify/express": "^4.0.2",
+		"fastify": "^5.2.1"
+	}
+}
