@@ -65,7 +65,9 @@ export const login = async (req, res) => {
 };
 
 export const getUsers = async (req, res) => {
-	const users = await prisma.user.findMany();
+	const users = await prisma.user.findMany({
+		omit: { password: true, login: true },
+	});
 
 	return res.send(users);
 };
