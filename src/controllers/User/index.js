@@ -5,7 +5,10 @@ const { hashSync, genSaltSync, compareSync } = bcryptjs;
 const prisma = new PrismaClient();
 
 export const createUser = async (req, res) => {
-	const { login, password } = req.body;
+	const { login, password, email, name, access_level, expiration, picture } =
+		req.body;
+
+	const level = parseInt(access_level);
 
 	const salt = genSaltSync();
 	const hash = hashSync(password, salt);
@@ -24,10 +27,11 @@ export const createUser = async (req, res) => {
 		data: {
 			login,
 			password: hash,
-			name: '',
-			access_level: 0,
+			name,
+			access_level: level,
 			expiration: 0,
 			picture: '',
+			email,
 		},
 	});
 

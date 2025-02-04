@@ -22,4 +22,5 @@ model User {
   access_level Int
   expiration Int
   picture String
+  email String
 }
