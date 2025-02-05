@@ -32,3 +32,11 @@ model Material {
   description String
   quantity String
 }
+
+
+model Kit {
+  id String @id @default(uuid())
+  code String @unique
+  description String
+  material String
+}
