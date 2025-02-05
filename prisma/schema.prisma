@@ -24,3 +24,11 @@ model User {
   picture String
   email String
 }
+
+
+model Material {
+  id String @id @default(uuid())
+  code String @unique
+  description String
+  quantity String
+}

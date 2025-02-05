@@ -75,3 +75,41 @@ export const getUsers = async (req, res) => {
 
 	return res.send(users);
 };
+
+export const getUser = async (req, res) => {
+	const { id } = req.params;
+	const user = await prisma.user.findFirst({
+		where: { id },
+		omit: { password: true },
+	});
+
+	res.send(user);
+};
+
+export const updateUser = async (req, res) => {
+	const { login, password, email, name, access_level, expiration, picture } =
+		req.body;
+
+	const { id } = req.params;
+
+	const level = parseInt(access_level);
+	// if (password) {
+	// 	const salt = genSaltSync();
+	// 	const hash = hashSync(password, salt);
+	// }
+
+	const user = await prisma.user.update({
+		where: { id },
+		data: {
+			login,
+			// password: hash,
+			name,
+			access_level: level,
+			expiration: 0,
+			picture: '',
+			email,
+		},
+	});
+
+	return res.status(201).send(user);
+};

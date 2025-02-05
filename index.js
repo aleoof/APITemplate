@@ -1,7 +1,8 @@
 // Import the framework and instantiate it
 import fastifyJwt from '@fastify/jwt';
 import Fastify from 'fastify';
-import routes from './src/routes/index.js';
+import users from './src/routes/users.js';
+import materials from './src/routes/materials.js';
 import cors from '@fastify/cors';
 const fastify = Fastify({
 	logger: true,
@@ -15,7 +16,8 @@ const secret = process.env.SECRET;
 fastify.register(fastifyJwt, {
 	secret: secret,
 });
-fastify.register(routes);
+fastify.register(users);
+fastify.register(materials);
 
 // Run the server!
 try {
