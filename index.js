@@ -4,6 +4,8 @@ import Fastify from 'fastify';
 import users from './src/routes/users.js';
 import materials from './src/routes/materials.js';
 import cors from '@fastify/cors';
+
+const PORT = process.env.PORT || 3000;
 const fastify = Fastify({
 	logger: true,
 });
@@ -21,7 +23,7 @@ fastify.register(materials);
 
 // Run the server!
 try {
-	await fastify.listen({ port: 3000 });
+	await fastify.listen({ port: PORT });
 } catch (err) {
 	fastify.log.error(err);
 	process.exit(1);

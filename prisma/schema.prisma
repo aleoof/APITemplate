@@ -40,3 +40,8 @@ model Kit {
   description String
   material String
 }
+
+model Tag {
+  id String @id @default(uuid())
+  referenceCode String
+}
