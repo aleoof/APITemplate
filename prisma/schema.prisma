@@ -28,7 +28,6 @@ model User {
 
 model Material {
   id String @id @default(uuid())
-  code String @unique
   description String
   quantity String
 }
@@ -36,7 +35,6 @@ model Material {
 
 model Kit {
   id String @id @default(uuid())
-  code String @unique
   description String
   material String
 }
