@@ -16,7 +16,7 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "node --env-file=.env index",
-		"start": "npx prisma db push && node --env-file=.env index.js",
+		"start": "prisma generate && node --env-file=.env index.js",
 		"migrate": "npx prisma migrate dev --name init",
 		"dbpush": "npx prisma db push",
 		"test": "echo \"Error: no test specified\" && exit 1"
