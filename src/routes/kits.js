@@ -1,6 +1,7 @@
 import {
 	createKit,
 	deleteKit,
+	getKit,
 	listKits,
 	updateKit,
 } from '../controllers/Kits/index.js';

@@ -3,13 +3,12 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const createKit = async (req, res) => {
-	const { description, material_id, material } = req.body;
+	const { description, materials } = req.body;
 
 	const newKit = await prisma.kit.create({
 		data: {
 			description,
-			material_id,
-			material,
+			materials,
 		},
 	});
 
@@ -17,17 +16,13 @@ export const createKit = async (req, res) => {
 };
 export const updateKit = async (req, res) => {
 	const { id } = req.params;
-	const { description, material_id } = req.body;
-
-	if (kit) {
-		return res.status(400).send({ err: 'Existing Kit' });
-	}
+	const { description, materials } = req.body;
 
 	const newKit = await prisma.kit.update({
 		where: { id },
 		data: {
 			description,
-			material_id,
+			materials,
 		},
 	});
 

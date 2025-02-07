@@ -25,17 +25,15 @@ model User {
 }
 
 model Material {
-  id          String @id @default(uuid())
+  id          String  @id @default(uuid())
   description String
   quantity    String
-  Kit         Kit[]
 }
 
 model Kit {
-  id          String   @id @default(uuid())
+  id          String     @id @default(uuid())
   description String
-  material    Material @relation(fields: [material_id], references: [id])
-  material_id String
+  materials String?
 }
 
 model Tag {
