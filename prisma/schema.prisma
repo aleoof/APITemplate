@@ -25,18 +25,40 @@ model User {
 }
 
 model Material {
-  id          String  @id @default(uuid())
+  id          Int           @id @default(autoincrement())
   description String
+  KitMaterial KitMaterial[]
+}
+
+model KitMaterial {
+  id          Int      @id @default(autoincrement())
+  material    Material @relation(fields: [material_id], references: [id])
+  material_id Int
+  kit         Kit      @relation(fields: [kit_id], references: [id])
+  kit_id      Int
   quantity    String
 }
 
 model Kit {
-  id          String     @id @default(uuid())
+  id          Int           @id @default(autoincrement())
   description String
-  materials String?
+  materials   KitMaterial[]
 }
 
 model Tag {
-  id            String @id @default(uuid())
+  id            Int    @id @default(autoincrement())
   referenceCode String
+}
+
+model Order {
+  id           Int    @id @default(autoincrement())
+  address      String
+  neighborhood String
+  city         String
+  state        String
+  kits         String
+  observations String
+  lat          String
+  long         String
+  qr_code      String
 }

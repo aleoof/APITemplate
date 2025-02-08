@@ -4,16 +4,27 @@ const prisma = new PrismaClient();
 
 export const createKit = async (req, res) => {
 	const { description, materials } = req.body;
+	console.log(req.body);
 
 	const newKit = await prisma.kit.create({
 		data: {
 			description,
-			materials,
 		},
 	});
 
-	return res.send(newKit);
+	materials.forEach(async (material) => {
+		await prisma.kitMaterial.create({
+			data: {
+				quantity: material.quantity,
+				kit_id: newKit.id,
+				material_id: material.id,
+			},
+		});
+	});
+
+	return res.send({ msg: 'Successfully created ' });
 };
+
 export const updateKit = async (req, res) => {
 	const { id } = req.params;
 	const { description, materials } = req.body;
@@ -28,6 +39,8 @@ export const updateKit = async (req, res) => {
 
 	return res.send(newKit);
 };
+
+
 export const deleteKit = async (req, res) => {
 	const { id } = req.params;
 	await prisma.kit.delete({
@@ -43,6 +56,6 @@ export const getKit = async (req, res) => {
 	return res.send(kit);
 };
 export const listKits = async (req, res) => {
-	const kits = await prisma.kit.findMany();
+	const kits = await prisma.kit.findMany().;
 	return res.send(kits);
 };
