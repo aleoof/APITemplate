@@ -40,7 +40,6 @@ export const updateKit = async (req, res) => {
 	return res.send(newKit);
 };
 
-
 export const deleteKit = async (req, res) => {
 	const { id } = req.params;
 	await prisma.kit.delete({
@@ -56,6 +55,6 @@ export const getKit = async (req, res) => {
 	return res.send(kit);
 };
 export const listKits = async (req, res) => {
-	const kits = await prisma.kit.findMany().;
+	const kits = await prisma.kit.findMany();
 	return res.send(kits);
 };

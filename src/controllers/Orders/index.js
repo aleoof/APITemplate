@@ -1,31 +1,83 @@
+import { PrismaClient } from '@prisma/client';
+
 const prisma = new PrismaClient();
 
 export const createOrder = async (req, res) => {
-	const { description, quantity, kitId } = req.body;
+	const {
+		address,
+		neighborhood,
+		city,
+		state,
+		observations,
+		lat,
+		long,
+		qr_code,
+		ordersKits,
+	} = req.body;
 
 	const newOrder = await prisma.order.create({
 		data: {
-			description,
-			quantity,
-			kitId,
+			address,
+			neighborhood,
+			city,
+			state,
+			observations,
+			lat,
+			long,
+			qr_code,
 		},
 	});
 
-	return res.send(newOrder);
+	ordersKits.forEach(async (kit) => {
+		console.log(kit);
+		await prisma.ordersKits.create({
+			data: {
+				order_id: newOrder.id,
+				kit_id: kit.kit_id,
+				quantity: kit.quantity,
+			},
+		});
+	});
+
+	return res.send({ msg: 'Created new Order' });
 };
 export const updateOrder = async (req, res) => {
 	const { id } = req.params;
-	const { description, quantity, kitId } = req.body;
+	const {
+		address,
+		neighborhood,
+		city,
+		state,
+		ordersKits,
+		observations,
+		lat,
+		long,
+		qr_code,
+	} = req.body;
 
 	const newOrder = await prisma.order.update({
 		where: { id },
 		data: {
-			description,
-			quantity,
-			kitId,
+			address,
+			neighborhood,
+			city,
+			state,
+			observations,
+			lat,
+			long,
+			qr_code,
 		},
 	});
-
+	ordersKits.forEach(async (kit) => {
+		console.log(kit);
+		await prisma.ordersKits.update({
+			where: { order_id },
+			data: {
+				kit_id: kit.id,
+				quantity: kit.quantity,
+			},
+		});
+	});
 	return res.send(newOrder);
 };
 export const deleteOrder = async (req, res) => {
@@ -37,10 +89,16 @@ export const deleteOrder = async (req, res) => {
 };
 export const getOrder = async (req, res) => {
 	const { id } = req.params;
+	const orderId = parseInt(id);
 	const orders = await prisma.order.findFirst({
-		where: { id },
+		where: { id: orderId },
 	});
-	return res.send(orders);
+	const ordersKits = await prisma.ordersKits.findMany({
+		where: { order_id: orderId },
+		omit: { id: true, order_id: true },
+	});
+
+	return res.send({ ...orders, ordersKits });
 };
 export const listOrders = async (req, res) => {
 	const orders = await prisma.order.findMany();
