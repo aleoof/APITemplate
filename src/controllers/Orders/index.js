@@ -43,6 +43,7 @@ export const createOrder = async (req, res) => {
 };
 export const updateOrder = async (req, res) => {
 	const { id } = req.params;
+	const orderId = parseInt(id);
 	const {
 		address,
 		neighborhood,
@@ -56,7 +57,7 @@ export const updateOrder = async (req, res) => {
 	} = req.body;
 
 	const newOrder = await prisma.order.update({
-		where: { id },
+		where: { id: orderId },
 		data: {
 			address,
 			neighborhood,
@@ -69,14 +70,27 @@ export const updateOrder = async (req, res) => {
 		},
 	});
 	ordersKits.forEach(async (kit) => {
-		console.log(kit);
-		await prisma.ordersKits.update({
-			where: { order_id },
-			data: {
-				kit_id: kit.id,
-				quantity: kit.quantity,
-			},
+		const findKit = await prisma.ordersKits.findFirst({
+			where: { order_id: newOrder.id, kit_id: kit.kit_id },
 		});
+
+		if (!findKit) {
+			await prisma.ordersKits.create({
+				data: {
+					order_id: newOrder.id,
+					kit_id: kit.kit_id,
+					quantity: kit.quantity,
+				},
+			});
+		} else {
+			await prisma.ordersKits.update({
+				where: { id: findKit.id },
+				data: {
+					kit_id: kit.kit_id,
+					quantity: kit.quantity,
+				},
+			});
+		}
 	});
 	return res.send(newOrder);
 };

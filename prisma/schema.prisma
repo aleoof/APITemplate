@@ -53,10 +53,10 @@ model Tag {
 
 model OrdersKits {
   id       Int   @id @default(autoincrement())
-  order_id Int
+  order_id Int?
   kit_id   Int
   quantity String ?
-  order    Order @relation(fields: [order_id], references: [id])
+  order    Order? @relation(fields: [order_id], references: [id])
   kit      Kit   @relation(fields: [kit_id], references: [id])
 }
 
