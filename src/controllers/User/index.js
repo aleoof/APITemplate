@@ -62,7 +62,7 @@ export const login = async (req, res) => {
 			{ login: user.login },
 			{ sign: { sub: user.id } }
 		);
-		return res.send({ token });
+		return res.send({ token, access_level: user.access_level });
 	} catch (err) {
 		return res.status(400).send({ msg: 'Internal error', err });
 	}
