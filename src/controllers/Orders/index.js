@@ -29,7 +29,6 @@ export const createOrder = async (req, res) => {
 	});
 
 	ordersKits.forEach(async (kit) => {
-		console.log(kit);
 		await prisma.ordersKits.create({
 			data: {
 				order_id: newOrder.id,
@@ -115,6 +114,12 @@ export const getOrder = async (req, res) => {
 	return res.send({ ...orders, ordersKits });
 };
 export const listOrders = async (req, res) => {
-	const orders = await prisma.order.findMany();
+	const orders = await prisma.order.findMany({
+		orderBy: [
+			{
+				id: 'desc',
+			},
+		],
+	});
 	return res.send(orders);
 };
