@@ -11,7 +11,7 @@ export default function (fastify, opts, done) {
 	fastify.get('/materials', { onRequest: [verifyJwt] }, (request, reply) => {
 		return listMaterials(request, reply);
 	});
-	fastify.get('/material', { onRequest: [verifyJwt] }, (request, reply) => {
+	fastify.get('/material/:id', { onRequest: [verifyJwt] }, (request, reply) => {
 		return getMaterial(request, reply);
 	});
 	fastify.post('/material', { onRequest: [verifyJwt] }, (request, reply) => {

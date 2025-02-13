@@ -17,10 +17,11 @@ export const createMaterial = async (req, res) => {
 };
 export const updateMaterial = async (req, res) => {
 	const { id } = req.params;
+	const materialId = parseInt(id);
 	const { description, quantity, kitId } = req.body;
 
 	const newMaterial = await prisma.material.update({
-		where: { id },
+		where: { id: materialId },
 		data: {
 			description,
 			quantity,
@@ -39,8 +40,9 @@ export const deleteMaterial = async (req, res) => {
 };
 export const getMaterial = async (req, res) => {
 	const { id } = req.params;
+	const materialId = parseInt(id);
 	const materials = await prisma.material.findFirst({
-		where: { id },
+		where: { id: materialId },
 	});
 	return res.send(materials);
 };
