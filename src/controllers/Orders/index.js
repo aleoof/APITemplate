@@ -15,6 +15,8 @@ export const createOrder = async (req, res) => {
 		ordersKits,
 	} = req.body;
 
+	const date = new Date();
+
 	const newOrder = await prisma.order.create({
 		data: {
 			address,
@@ -25,6 +27,7 @@ export const createOrder = async (req, res) => {
 			lat,
 			long,
 			qr_code,
+			registerDay: date,
 		},
 	});
 
@@ -95,8 +98,10 @@ export const updateOrder = async (req, res) => {
 };
 export const deleteOrder = async (req, res) => {
 	const { id } = req.params;
-	await prisma.order.delete({
-		where: { id },
+	const deleteID = parseInt(id);
+	await prisma.order.update({
+		where: { id: deleteID },
+		data: { active: false },
 	});
 	return res.send({ msg: 'Successfully deleted ' });
 };
@@ -115,6 +120,7 @@ export const getOrder = async (req, res) => {
 };
 export const listOrders = async (req, res) => {
 	const orders = await prisma.order.findMany({
+		where: { active: true },
 		orderBy: [
 			{
 				id: 'desc',

@@ -52,12 +52,12 @@ model Tag {
 }
 
 model OrdersKits {
-  id       Int   @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   order_id Int?
   kit_id   Int
-  quantity String ?
-  order    Order? @relation(fields: [order_id], references: [id])
-  kit      Kit   @relation(fields: [kit_id], references: [id])
+  quantity String?
+  order    Order?  @relation(fields: [order_id], references: [id])
+  kit      Kit     @relation(fields: [kit_id], references: [id])
 }
 
 model Order {
@@ -66,9 +66,11 @@ model Order {
   neighborhood String
   city         String
   state        String
-  observations String
+  observations String?      @default("")
   lat          String
   long         String
   qr_code      String
+  active       Boolean      @default(true)
+  registerDay  DateTime
   ordersKits   OrdersKits[]
 }
