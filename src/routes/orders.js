@@ -3,6 +3,7 @@ import {
 	deleteOrder,
 	getOrder,
 	listOrders,
+	removeKitOrder,
 	updateOrder,
 } from '../controllers/Orders/index.js';
 import { verifyJwt } from '../middleware/JWTAuth.js';
@@ -23,5 +24,13 @@ export default function (fastify, opts, done) {
 	fastify.put('/order/:id', { onRequest: [verifyJwt] }, (request, reply) => {
 		return updateOrder(request, reply);
 	});
+
+	fastify.delete(
+		'/kit-order/:id',
+		{ onRequest: [verifyJwt] },
+		(request, reply) => {
+			return removeKitOrder(request, reply);
+		}
+	);
 	done();
 }

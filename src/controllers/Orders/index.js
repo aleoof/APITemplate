@@ -41,7 +41,7 @@ export const createOrder = async (req, res) => {
 		});
 	});
 
-	return res.send({ msg: 'Created new Order' });
+	return res.send(newOrder);
 };
 export const updateOrder = async (req, res) => {
 	const { id } = req.params;
@@ -128,4 +128,15 @@ export const listOrders = async (req, res) => {
 		],
 	});
 	return res.send(orders);
+};
+
+export const removeKitOrder = async (req, res) => {
+	const { id } = req.params;
+	console.log(id);
+	const kitOrderId = parseInt(id);
+	await prisma.ordersKits.delete({
+		where: { id: kitOrderId },
+	});
+
+	return res.send({ msg: 'removed' });
 };
