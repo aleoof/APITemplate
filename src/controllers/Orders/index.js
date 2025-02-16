@@ -13,6 +13,7 @@ export const createOrder = async (req, res) => {
 		long,
 		qr_code,
 		ordersKits,
+		protocol,
 	} = req.body;
 
 	const date = new Date();
@@ -28,6 +29,7 @@ export const createOrder = async (req, res) => {
 			long,
 			qr_code,
 			registerDay: date,
+			protocol,
 		},
 	});
 
@@ -56,6 +58,7 @@ export const updateOrder = async (req, res) => {
 		lat,
 		long,
 		qr_code,
+		protocol,
 	} = req.body;
 
 	const newOrder = await prisma.order.update({
@@ -69,6 +72,7 @@ export const updateOrder = async (req, res) => {
 			lat,
 			long,
 			qr_code,
+			protocol,
 		},
 	});
 	ordersKits.forEach(async (kit) => {
