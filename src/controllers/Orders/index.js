@@ -140,3 +140,39 @@ export const removeKitOrder = async (req, res) => {
 
 	return res.send({ msg: 'removed' });
 };
+
+export const findOrdersByDate = async (req, res) => {
+	const { start, end } = req.query;
+
+	const filteredByDate = await prisma.order.findMany({
+		where: {
+			registerDay: {
+				lte: new Date(end),
+				gte: new Date(start),
+			},
+		},
+	});
+
+	const orderList = await filteredByDate.map(async (order) => {
+		const orderId = order.id;
+
+		const ordersKits = await prisma.ordersKits.findMany({
+			where: { order_id: orderId },
+			include: {
+				kit: true,
+			},
+			omit: {
+				id: true,
+				order_id: true,
+				kit_id: true,
+			},
+		});
+
+		return { order, ordersKits };
+	});
+
+	const all = await Promise.all(orderList);
+	console.log('log =>', all);
+
+	res.send(all);
+};

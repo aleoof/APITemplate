@@ -1,6 +1,7 @@
 import {
 	createOrder,
 	deleteOrder,
+	findOrdersByDate,
 	getOrder,
 	listOrders,
 	removeKitOrder,
@@ -30,6 +31,14 @@ export default function (fastify, opts, done) {
 		{ onRequest: [verifyJwt] },
 		(request, reply) => {
 			return removeKitOrder(request, reply);
+		}
+	);
+
+	fastify.get(
+		'/orders/report',
+		{ onRequest: [verifyJwt] },
+		(request, reply) => {
+			return findOrdersByDate(request, reply);
 		}
 	);
 	done();
