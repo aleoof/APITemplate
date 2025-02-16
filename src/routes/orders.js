@@ -1,6 +1,7 @@
 import {
 	createOrder,
 	deleteOrder,
+	duplicateOrder,
 	findOrdersByDate,
 	getOrder,
 	listOrders,
@@ -39,6 +40,14 @@ export default function (fastify, opts, done) {
 		{ onRequest: [verifyJwt] },
 		(request, reply) => {
 			return findOrdersByDate(request, reply);
+		}
+	);
+
+	fastify.post(
+		'/order/duplicate/:id',
+		{ onRequest: [verifyJwt] },
+		(request, reply) => {
+			return duplicateOrder(request, reply);
 		}
 	);
 	done();

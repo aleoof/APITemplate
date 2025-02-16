@@ -172,7 +172,33 @@ export const findOrdersByDate = async (req, res) => {
 	});
 
 	const all = await Promise.all(orderList);
-	console.log('log =>', all);
 
 	res.send(all);
+};
+
+export const duplicateOrder = async (req, res) => {
+	const { id } = req.params;
+	const orderId = parseInt(id);
+	const orders = await prisma.order.findFirst({
+		where: { id: orderId },
+		omit: { id: true },
+	});
+
+	const ordersKits = await prisma.ordersKits.findMany({
+		where: { order_id: orderId },
+		omit: { id: true, order_id: true },
+	});
+
+	const duplicateOrder = await prisma.order.create({
+		data: { ...orders },
+	});
+	ordersKits.forEach(async (kit) => {
+		await prisma.ordersKits.create({
+			data: {
+				order_id: duplicateOrder.id,
+				kit_id: kit.kit_id,
+				quantity: kit.quantity,
+			},
+		});
+	});
 };
