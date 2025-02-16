@@ -33,8 +33,9 @@ export const updateMaterial = async (req, res) => {
 };
 export const deleteMaterial = async (req, res) => {
 	const { id } = req.params;
-	await prisma.material.delete({
+	await prisma.material.update({
 		where: { id },
+		data: { active: false },
 	});
 	return res.send({ msg: 'Successfully deleted ' });
 };
