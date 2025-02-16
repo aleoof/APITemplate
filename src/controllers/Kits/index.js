@@ -54,7 +54,27 @@ export const getKit = async (req, res) => {
 	});
 	return res.send(kit);
 };
+
 export const listKits = async (req, res) => {
 	const kits = await prisma.kit.findMany();
-	return res.send(kits);
+
+	const listKits = kits.map(async (kit) => {
+		const materials = await prisma.kitMaterial.findMany({
+			include: {
+				material: true,
+			},
+			omit: {
+				id: true,
+				material_id: true,
+				kit_id: true,
+				quantity: true,
+			},
+			where: { kit_id: kit.id },
+		});
+		return { ...kit, materials };
+	});
+
+	const all = await Promise.all(listKits);
+
+	return res.send(all);
 };
