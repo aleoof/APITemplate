@@ -150,6 +150,7 @@ export const findOrdersByDate = async (req, res) => {
 
 	const filteredByDate = await prisma.order.findMany({
 		where: {
+			active: true,
 			registerDay: {
 				lte: new Date(end),
 				gte: new Date(start),
@@ -194,7 +195,7 @@ export const duplicateOrder = async (req, res) => {
 	});
 
 	const duplicateOrder = await prisma.order.create({
-		data: { ...orders },
+		data: { ...orders, qr_code: `${parseInt(orders.qr_code) + 1}` },
 	});
 	ordersKits.forEach(async (kit) => {
 		await prisma.ordersKits.create({
