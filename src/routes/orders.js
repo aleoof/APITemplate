@@ -28,7 +28,7 @@ export default function (fastify, opts, done) {
 	});
 
 	fastify.delete(
-		'/kit-order/:id',
+		'/kit-order/:kitid/:orderid',
 		{ onRequest: [verifyJwt] },
 		(request, reply) => {
 			return removeKitOrder(request, reply);

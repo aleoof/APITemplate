@@ -135,11 +135,16 @@ export const listOrders = async (req, res) => {
 };
 
 export const removeKitOrder = async (req, res) => {
-	const { id } = req.params;
-	console.log(id);
-	const kitOrderId = parseInt(id);
+	const { kitid, orderid } = req.params;
+	const kitId = parseInt(kitid);
+	const orderId = parseInt(orderid);
+
+	const findMaterial = await prisma.ordersKits.findFirst({
+		where: { kit_id: kitId, order_id: orderId },
+	});
+
 	await prisma.ordersKits.delete({
-		where: { id: kitOrderId },
+		where: { id: findMaterial.id },
 	});
 
 	return res.send({ msg: 'removed' });
@@ -148,12 +153,17 @@ export const removeKitOrder = async (req, res) => {
 export const findOrdersByDate = async (req, res) => {
 	const { start, end } = req.query;
 
+	const startDate = new Date(`${start}`);
+	const endDate = new Date(`${end}`);
+	const dateEndToIso = endDate.setHours(24, 59, 59);
+	const dateStartToIso = startDate.setHours(0, 0, 0);
+
 	const filteredByDate = await prisma.order.findMany({
 		where: {
 			active: true,
 			registerDay: {
-				lte: new Date(end),
-				gte: new Date(start),
+				lte: dateEndToIso.toISOString,
+				gte: dateStartToIso.toISOString,
 			},
 		},
 	});
