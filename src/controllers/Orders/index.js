@@ -209,6 +209,7 @@ export const duplicateOrder = async (req, res) => {
 			...orders,
 			qr_code: `${parseInt(orders.qr_code) + 1}`,
 			registerDay: new Date(),
+			active: true,
 		},
 	});
 	ordersKits.forEach(async (kit) => {
