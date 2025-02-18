@@ -17,6 +17,7 @@ export const createOrder = async (req, res) => {
 	} = req.body;
 
 	const date = new Date();
+	const osCode = parseInt(qr_code);
 
 	const newOrder = await prisma.order.create({
 		data: {
@@ -27,7 +28,7 @@ export const createOrder = async (req, res) => {
 			observations,
 			lat,
 			long,
-			qr_code: parseInt(qr_code),
+			qr_code: osCode,
 			registerDay: date,
 			protocol,
 		},
@@ -61,6 +62,8 @@ export const updateOrder = async (req, res) => {
 		protocol,
 	} = req.body;
 
+	const osCode = parseInt(qr_code);
+
 	const newOrder = await prisma.order.update({
 		where: { id: orderId },
 		data: {
@@ -71,7 +74,7 @@ export const updateOrder = async (req, res) => {
 			observations,
 			lat,
 			long,
-			qr_code: parseInt(qr_code),
+			qr_code: osCode,
 			protocol,
 		},
 	});
@@ -209,10 +212,12 @@ export const duplicateOrder = async (req, res) => {
 		omit: { id: true, order_id: true },
 	});
 
+	const osCode = parseInt(orders.qr_code);
+
 	const duplicateOrder = await prisma.order.create({
 		data: {
 			...orders,
-			qr_code: parseInt(orders.qr_code) + 1,
+			qr_code: osCode + 1,
 			registerDay: new Date(),
 			active: true,
 			duplicated: true,
