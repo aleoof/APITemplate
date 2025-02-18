@@ -195,8 +195,8 @@ export const duplicateOrder = async (req, res) => {
 	const { id } = req.params;
 	const orderId = parseInt(id);
 	const orders = await prisma.order.findFirst({
-		where: { id: orderId },
 		omit: { id: true },
+		orderBy: { id: 'desc' },
 	});
 
 	const ordersKits = await prisma.ordersKits.findMany({
@@ -205,7 +205,11 @@ export const duplicateOrder = async (req, res) => {
 	});
 
 	const duplicateOrder = await prisma.order.create({
-		data: { ...orders, qr_code: `${parseInt(orders.qr_code) + 1}` },
+		data: {
+			...orders,
+			qr_code: `${parseInt(orders.qr_code) + 1}`,
+			registerDay: new Date(),
+		},
 	});
 	ordersKits.forEach(async (kit) => {
 		await prisma.ordersKits.create({

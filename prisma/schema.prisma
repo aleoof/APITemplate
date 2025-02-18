@@ -72,7 +72,7 @@ model Order {
   lat          String
   long         String
   qr_code      String
-  protocol     String       @default("")
+  protocol     String?       @default("")
   active       Boolean      @default(true)
   registerDay  DateTime     @default(now())
   ordersKits   OrdersKits[]
