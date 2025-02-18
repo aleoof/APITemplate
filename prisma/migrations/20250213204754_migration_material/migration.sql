@@ -1,5 +1,0 @@
--- AlterTable
-ALTER TABLE `material` ADD COLUMN `active` BOOLEAN NOT NULL DEFAULT true;
-
--- AlterTable
-ALTER TABLE `order` MODIFY `registerDay` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3);
