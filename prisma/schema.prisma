@@ -71,9 +71,10 @@ model Order {
   observations String?      @default("")
   lat          String
   long         String
-  qr_code      String
+  qr_code      Int
   protocol     String?       @default("")
   active       Boolean      @default(true)
   registerDay  DateTime     @default(now())
+  duplicated Boolean? @default(false)
   ordersKits   OrdersKits[]
 }

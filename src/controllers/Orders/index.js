@@ -27,7 +27,7 @@ export const createOrder = async (req, res) => {
 			observations,
 			lat,
 			long,
-			qr_code,
+			qr_code: parseInt(qr_code),
 			registerDay: date,
 			protocol,
 		},
@@ -71,7 +71,7 @@ export const updateOrder = async (req, res) => {
 			observations,
 			lat,
 			long,
-			qr_code,
+			qr_code: parseInt(qr_code),
 			protocol,
 		},
 	});
@@ -155,15 +155,20 @@ export const findOrdersByDate = async (req, res) => {
 
 	const startDate = new Date(`${start}`);
 	const endDate = new Date(`${end}`);
-	const dateEndToIso = endDate.setHours(24, 59, 59);
-	const dateStartToIso = startDate.setHours(0, 0, 0);
+	const dateEndToIso = endDate.setHours(23, 59, 59, 999);
+	const dateStartToIso = startDate.setHours(0, 0, 0, 0);
+
+	console.log(
+		new Date(`${end}T00:00:00.000Z`),
+		new Date(`${start}T23:59:59.999Z`)
+	);
 
 	const filteredByDate = await prisma.order.findMany({
 		where: {
 			active: true,
 			registerDay: {
-				lte: dateEndToIso.toISOString,
-				gte: dateStartToIso.toISOString,
+				lte: new Date(`${end}T23:59:59.999Z`),
+				gte: new Date(`${start}T00:00:00.000Z`),
 			},
 		},
 	});
@@ -196,7 +201,7 @@ export const duplicateOrder = async (req, res) => {
 	const orderId = parseInt(id);
 	const orders = await prisma.order.findFirst({
 		omit: { id: true },
-		orderBy: { id: 'desc' },
+		orderBy: { qr_code: 'desc' },
 	});
 
 	const ordersKits = await prisma.ordersKits.findMany({
@@ -207,9 +212,10 @@ export const duplicateOrder = async (req, res) => {
 	const duplicateOrder = await prisma.order.create({
 		data: {
 			...orders,
-			qr_code: `${parseInt(orders.qr_code) + 1}`,
+			qr_code: parseInt(orders.qr_code) + 1,
 			registerDay: new Date(),
 			active: true,
+			duplicated: true,
 		},
 	});
 	ordersKits.forEach(async (kit) => {
