@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model user {
   id           String @id @default(uuid())
   name         String
   login        String @unique
@@ -24,45 +24,45 @@ model User {
   email        String
 }
 
-model Material {
+model material {
   id          Int           @id @default(autoincrement())
   description String
   active      Boolean       @default(true)
-  KitMaterial KitMaterial[]
+  KitMaterial kitMaterial[]
 }
 
-model KitMaterial {
+model kitMaterial {
   id          Int      @id @default(autoincrement())
-  material    Material @relation(fields: [material_id], references: [id])
+  material    material @relation(fields: [material_id], references: [id])
   material_id Int
-  kit         Kit      @relation(fields: [kit_id], references: [id])
+  kit         kit      @relation(fields: [kit_id], references: [id])
   kit_id      Int
   quantity    String
 }
 
-model Kit {
+model kit {
   id          Int           @id @default(autoincrement())
   description String
   active      Boolean       @default(true)
-  materials   KitMaterial[]
-  OrdersKits  OrdersKits[]
+  materials   kitMaterial[]
+  OrdersKits  ordersKits[]
 }
 
-model Tag {
+model tag {
   id            Int    @id @default(autoincrement())
   referenceCode String
 }
 
-model OrdersKits {
+model ordersKits {
   id       Int     @id @default(autoincrement())
   order_id Int?
   kit_id   Int
   quantity String?
-  order    Order?  @relation(fields: [order_id], references: [id])
-  kit      Kit     @relation(fields: [kit_id], references: [id])
+  order    order?  @relation(fields: [order_id], references: [id])
+  kit      kit     @relation(fields: [kit_id], references: [id])
 }
 
-model Order {
+model order {
   id           Int          @id @default(autoincrement())
   address      String
   neighborhood String
@@ -76,5 +76,5 @@ model Order {
   active       Boolean      @default(true)
   registerDay  DateTime     @default(now())
   duplicated Boolean? @default(false)
-  ordersKits   OrdersKits[]
+  ordersKits   ordersKits[]
 }

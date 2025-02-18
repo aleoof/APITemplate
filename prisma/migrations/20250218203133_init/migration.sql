@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `User` (
+CREATE TABLE `user` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `login` VARCHAR(191) NOT NULL,
@@ -9,12 +9,12 @@ CREATE TABLE `User` (
     `picture` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `User_login_key`(`login`),
+    UNIQUE INDEX `user_login_key`(`login`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Material` (
+CREATE TABLE `material` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `description` VARCHAR(191) NOT NULL,
     `active` BOOLEAN NOT NULL DEFAULT true,
@@ -23,7 +23,7 @@ CREATE TABLE `Material` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `KitMaterial` (
+CREATE TABLE `kitMaterial` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `material_id` INTEGER NOT NULL,
     `kit_id` INTEGER NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE `KitMaterial` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Kit` (
+CREATE TABLE `kit` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `description` VARCHAR(191) NOT NULL,
     `active` BOOLEAN NOT NULL DEFAULT true,
@@ -42,7 +42,7 @@ CREATE TABLE `Kit` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Tag` (
+CREATE TABLE `tag` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `referenceCode` VARCHAR(191) NOT NULL,
 
@@ -50,7 +50,7 @@ CREATE TABLE `Tag` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `OrdersKits` (
+CREATE TABLE `ordersKits` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `order_id` INTEGER NULL,
     `kit_id` INTEGER NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE `OrdersKits` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Order` (
+CREATE TABLE `order` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `address` VARCHAR(191) NOT NULL,
     `neighborhood` VARCHAR(191) NOT NULL,
@@ -69,22 +69,23 @@ CREATE TABLE `Order` (
     `observations` VARCHAR(191) NULL DEFAULT '',
     `lat` VARCHAR(191) NOT NULL,
     `long` VARCHAR(191) NOT NULL,
-    `qr_code` VARCHAR(191) NOT NULL,
-    `protocol` VARCHAR(191) NOT NULL DEFAULT '',
+    `qr_code` INTEGER NOT NULL,
+    `protocol` VARCHAR(191) NULL DEFAULT '',
     `active` BOOLEAN NOT NULL DEFAULT true,
     `registerDay` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `duplicated` BOOLEAN NULL DEFAULT false,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `KitMaterial` ADD CONSTRAINT `KitMaterial_material_id_fkey` FOREIGN KEY (`material_id`) REFERENCES `Material`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `kitMaterial` ADD CONSTRAINT `kitMaterial_material_id_fkey` FOREIGN KEY (`material_id`) REFERENCES `material`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `KitMaterial` ADD CONSTRAINT `KitMaterial_kit_id_fkey` FOREIGN KEY (`kit_id`) REFERENCES `Kit`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `kitMaterial` ADD CONSTRAINT `kitMaterial_kit_id_fkey` FOREIGN KEY (`kit_id`) REFERENCES `kit`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `OrdersKits` ADD CONSTRAINT `OrdersKits_order_id_fkey` FOREIGN KEY (`order_id`) REFERENCES `Order`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `ordersKits` ADD CONSTRAINT `ordersKits_order_id_fkey` FOREIGN KEY (`order_id`) REFERENCES `order`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `OrdersKits` ADD CONSTRAINT `OrdersKits_kit_id_fkey` FOREIGN KEY (`kit_id`) REFERENCES `Kit`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `ordersKits` ADD CONSTRAINT `ordersKits_kit_id_fkey` FOREIGN KEY (`kit_id`) REFERENCES `kit`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
