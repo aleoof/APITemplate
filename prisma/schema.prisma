@@ -63,18 +63,19 @@ model OrdersKits {
 }
 
 model Order {
-  id           Int          @id @default(autoincrement())
-  address      String
-  neighborhood String
-  city         String
-  state        String
-  observations String?      @default("")
-  lat          String
-  long         String
-  qr_code      String
-  protocolNumber     String       @default("")
-  active       Boolean      @default(true)
-  registerDay  DateTime     @default(now())
-  duplicated Boolean @default(false)
-  ordersKits   OrdersKits[]
+  id             Int          @id @default(autoincrement())
+  address        String
+  userId         String
+  neighborhood   String
+  city           String
+  state          String
+  observations   String?      @default("")
+  lat            String
+  long           String
+  qr_code        String
+  protocolNumber String       @default("")
+  active         Boolean      @default(true)
+  registerDay    DateTime     @default(now())
+  duplicated     Boolean      @default(false)
+  ordersKits     OrdersKits[]
 }
