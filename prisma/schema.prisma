@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
+model User {
   id           String @id @default(uuid())
   name         String
   login        String @unique
@@ -24,45 +24,45 @@ model user {
   email        String
 }
 
-model material {
+model Material {
   id          Int           @id @default(autoincrement())
   description String
   active      Boolean       @default(true)
-  KitMaterial kitMaterial[]
+  KitMaterial KitMaterial[]
 }
 
-model kitMaterial {
+model KitMaterial {
   id          Int      @id @default(autoincrement())
-  material    material @relation(fields: [material_id], references: [id])
+  material    Material @relation(fields: [material_id], references: [id])
   material_id Int
-  kit         kit      @relation(fields: [kit_id], references: [id])
+  kit         Kit      @relation(fields: [kit_id], references: [id])
   kit_id      Int
   quantity    String
 }
 
-model kit {
+model Kit {
   id          Int           @id @default(autoincrement())
   description String
   active      Boolean       @default(true)
-  materials   kitMaterial[]
-  OrdersKits  ordersKits[]
+  materials   KitMaterial[]
+  OrdersKits  OrdersKits[]
 }
 
-model tag {
+model Tag {
   id            Int    @id @default(autoincrement())
   referenceCode String
 }
 
-model ordersKits {
+model OrdersKits {
   id       Int     @id @default(autoincrement())
   order_id Int?
   kit_id   Int
   quantity String?
-  order    order?  @relation(fields: [order_id], references: [id])
-  kit      kit     @relation(fields: [kit_id], references: [id])
+  order    Order?  @relation(fields: [order_id], references: [id])
+  kit      Kit     @relation(fields: [kit_id], references: [id])
 }
 
-model order {
+model Order {
   id           Int          @id @default(autoincrement())
   address      String
   neighborhood String
@@ -71,10 +71,10 @@ model order {
   observations String?      @default("")
   lat          String
   long         String
-  qr_code      Int
-  protocol     String?       @default("")
+  qr_code      String
+  protocolNumber     String       @default("")
   active       Boolean      @default(true)
   registerDay  DateTime     @default(now())
-  duplicated Boolean? @default(false)
-  ordersKits   ordersKits[]
+  duplicated Boolean @default(false)
+  ordersKits   OrdersKits[]
 }
