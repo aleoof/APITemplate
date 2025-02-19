@@ -14,10 +14,11 @@ export const createOrder = async (req, res) => {
 		qr_code,
 		ordersKits,
 		protocolNumber,
+		userId
 	} = req.body;
 
 	const date = new Date();
-	// const osCode = parseInt(qr_code);
+	const osCode = parseInt(qr_code);
 
 	const newOrder = await prisma.order.create({
 		data: {
@@ -28,9 +29,10 @@ export const createOrder = async (req, res) => {
 			observations,
 			lat,
 			long,
-			qr_code,
+			qr_code: osCode,
 			registerDay: date,
 			protocolNumber,
+			userId,
 		},
 	});
 
@@ -62,7 +64,7 @@ export const updateOrder = async (req, res) => {
 		protocolNumber,
 	} = req.body;
 
-	// const osCode = parseInt(qr_code);
+	const osCode = parseInt(qr_code);
 
 	const newOrder = await prisma.order.update({
 		where: { id: orderId },
@@ -74,7 +76,7 @@ export const updateOrder = async (req, res) => {
 			observations,
 			lat,
 			long,
-			qr_code,
+			qr_code: osCode,
 			protocolNumber,
 		},
 	});

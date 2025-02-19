@@ -64,15 +64,15 @@ model OrdersKits {
 
 model Order {
   id             Int          @id @default(autoincrement())
-  address        String
-  userId         String
+  address        String       @db.VarChar(50)
+  userId         String       @default("")
   neighborhood   String
   city           String
   state          String
   observations   String?      @default("")
   lat            String
   long           String
-  qr_code        String
+  qr_code        Int          @unique
   protocolNumber String       @default("")
   active         Boolean      @default(true)
   registerDay    DateTime     @default(now())
