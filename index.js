@@ -6,6 +6,7 @@ import materials from './src/routes/materials.js';
 import kits from './src/routes/kits.js';
 import cors from '@fastify/cors';
 import orders from './src/routes/orders.js';
+import dashboard from './src/routes/dashboard.js';
 
 const PORT = process.env.PORT || 3000;
 const fastify = Fastify({
@@ -24,6 +25,7 @@ fastify.register(users);
 fastify.register(materials);
 fastify.register(kits);
 fastify.register(orders);
+fastify.register(dashboard);
 
 // Run the server!
 try {

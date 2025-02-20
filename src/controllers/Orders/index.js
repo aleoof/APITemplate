@@ -141,7 +141,8 @@ export const listOrders = async (req, res) => {
 			},
 		],
 	});
-	return res.send(orders);
+	const total = await prisma.order.count();
+	return res.send({ orders, count: { total } });
 };
 
 export const removeKitOrder = async (req, res) => {
