@@ -3,13 +3,13 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const createMaterial = async (req, res) => {
-	const { description, quantity, kitId } = req.body;
+	const { description, group, active } = req.body;
 
 	const newMaterial = await prisma.material.create({
 		data: {
 			description,
-			quantity,
-			kitId,
+			group,
+			active: active === 'true',
 		},
 	});
 
@@ -18,7 +18,7 @@ export const createMaterial = async (req, res) => {
 export const updateMaterial = async (req, res) => {
 	const { id } = req.params;
 	const materialId = parseInt(id);
-	const { description, quantity, kitId } = req.body;
+	const { description, quantity, kitId, group, active } = req.body;
 
 	const newMaterial = await prisma.material.update({
 		where: { id: materialId },
@@ -26,6 +26,8 @@ export const updateMaterial = async (req, res) => {
 			description,
 			quantity,
 			kitId,
+			group,
+			active: active === 'true',
 		},
 	});
 
