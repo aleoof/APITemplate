@@ -14,11 +14,16 @@ export const createOrder = async (req, res) => {
 		qr_code,
 		ordersKits,
 		protocolNumber,
-		userId
+		userId,
 	} = req.body;
 
-	const date = new Date();
+	const date = new Date().toLocaleString('sv-SE', {
+		timeZone: 'America/Sao_Paulo',
+	});
 	const osCode = parseInt(qr_code);
+
+	const tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+	const localISOTime = new Date(Date.now() - tzoffset).toISOString();
 
 	const newOrder = await prisma.order.create({
 		data: {
@@ -30,7 +35,7 @@ export const createOrder = async (req, res) => {
 			lat,
 			long,
 			qr_code: osCode,
-			registerDay: date,
+			registerDay: localISOTime,
 			protocolNumber,
 			userId,
 		},
@@ -157,11 +162,6 @@ export const removeKitOrder = async (req, res) => {
 
 export const findOrdersByDate = async (req, res) => {
 	const { start, end } = req.query;
-
-	const startDate = new Date(`${start}`);
-	const endDate = new Date(`${end}`);
-	const dateEndToIso = endDate.setHours(23, 59, 59, 999);
-	const dateStartToIso = startDate.setHours(0, 0, 0, 0);
 
 	console.log(
 		new Date(`${end}T00:00:00.000Z`),
