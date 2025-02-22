@@ -9,7 +9,7 @@ export const createMaterial = async (req, res) => {
 		data: {
 			description,
 			group,
-			active: active === 'true',
+			active,
 		},
 	});
 
@@ -27,7 +27,7 @@ export const updateMaterial = async (req, res) => {
 			quantity,
 			kitId,
 			group,
-			active: active === 'true',
+			active,
 		},
 	});
 
