@@ -52,7 +52,7 @@ export const getMaterial = async (req, res) => {
 };
 export const listMaterials = async (req, res) => {
 	const materials = await prisma.material.findMany({
-		where: { active: true },
+		where: { active: false },
 	});
 	return res.send(materials);
 };
