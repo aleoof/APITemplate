@@ -35,8 +35,9 @@ export const updateMaterial = async (req, res) => {
 };
 export const deleteMaterial = async (req, res) => {
 	const { id } = req.params;
+	const materialId = parseInt(id);
 	await prisma.material.update({
-		where: { id },
+		where: { id: materialId },
 		data: { active: false },
 	});
 	return res.send({ msg: 'Successfully deleted ' });
@@ -50,6 +51,8 @@ export const getMaterial = async (req, res) => {
 	return res.send(materials);
 };
 export const listMaterials = async (req, res) => {
-	const materials = await prisma.material.findMany();
+	const materials = await prisma.material.findMany({
+		where: { active: true },
+	});
 	return res.send(materials);
 };
