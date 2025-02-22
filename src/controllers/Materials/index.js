@@ -5,11 +5,18 @@ const prisma = new PrismaClient();
 export const createMaterial = async (req, res) => {
 	const { description, group, active } = req.body;
 
+	let activeMaterial;
+	if (typeof active === 'string') {
+		activeMaterial = active === 'true';
+	} else {
+		activeMaterial = active;
+	}
+
 	const newMaterial = await prisma.material.create({
 		data: {
 			description,
 			group,
-			active,
+			active: activeMaterial,
 		},
 	});
 
@@ -20,6 +27,13 @@ export const updateMaterial = async (req, res) => {
 	const materialId = parseInt(id);
 	const { description, quantity, kitId, group, active } = req.body;
 
+	let activeMaterial;
+	if (typeof active === 'string') {
+		activeMaterial = active === 'true';
+	} else {
+		activeMaterial = active;
+	}
+
 	const newMaterial = await prisma.material.update({
 		where: { id: materialId },
 		data: {
@@ -27,7 +41,7 @@ export const updateMaterial = async (req, res) => {
 			quantity,
 			kitId,
 			group,
-			active,
+			active: activeMaterial,
 		},
 	});
 
